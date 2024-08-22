@@ -289,6 +289,24 @@ void AP_NMEA_Output::update()
 
         space_required += pashr_length;
     }
+
+    if ((_message_enable_bitmask.get() & static_cast<int16_t>(Enabled_Messages::PASHR)) != 0) {
+        // get roll, pitch, yaw
+        const float roll_deg = wrap_180(degrees(ahrs.get_roll()));
+        const float pitch_deg = wrap_180(degrees(ahrs.get_pitch()));
+        const float yaw_deg = wrap_360(degrees(ahrs.get_yaw()));
+
+        // format PASHR message
+        pashr_length = nmea_printf_buffer(pashr, sizeof(pashr),
+            "$PASHR,%s,%.2f,T,%c%.2f",
+            tstring,
+            yaw_deg, // This is a TRUE NORTH value
+            roll_deg < 0 ? '-' : '+', fabs(roll_deg),    // always show + or - symbol
+            pitch_deg < 0 ? '-' : '+', fabs(pitch_deg),   // always show + or - symbol
+
+
+        space_required += pashr_length;
+    }
 #endif
 
     // send to all NMEA output ports
