@@ -292,32 +292,32 @@ void AP_NMEA_Output::update()
 
     uint16_t liaz_length = 0;
     char liaz[100];
-    if (true) {
-        // get roll, pitch, yaw
-        const float roll_deg = wrap_180(degrees(ahrs.get_roll()));
-        const float pitch_deg = wrap_180(degrees(ahrs.get_pitch()));
-        const float yaw_deg = wrap_360(degrees(ahrs.get_yaw()));
+    //if ((_message_enable_bitmask.get() & static_cast<int16_t>(Enabled_Messages::LIAZ)) != 0) {
+    //    // get roll, pitch, yaw
+    //    const float roll_deg = wrap_180(degrees(ahrs.get_roll()));
+    //    const float pitch_deg = wrap_180(degrees(ahrs.get_pitch()));
+    //    const float yaw_deg = wrap_360(degrees(ahrs.get_yaw()));
 
-        // get speed and heading
-        const Vector2f speed = ahrs.groundspeed_vector();
-        const float heading = wrap_360(degrees(atan2f(speed.x, speed.y)));
-
-
-        // format LIAZ message
-        liaz_length = nmea_printf_buffer(liaz, sizeof(liaz),
-            "$LIAZ,%s,%.2f,%.2f,%.2f,%.2f,%s,%s,%.2f",
-            tstring,
-            yaw_deg, // This is a TRUE NORTH value
-            roll_deg < 0 ? '-' : '+', fabs(roll_deg),    // always show + or - symbol
-            pitch_deg < 0 ? '-' : '+', fabs(pitch_deg),   // always show + or - symbol
-            heading,
-            lat_string,
-            lng_string,
-            loc.alt * 0.01f);
+    //    // get speed and heading
+    //    const Vector2f speed = ahrs.groundspeed_vector();
+    //    const float heading = wrap_360(degrees(atan2f(speed.x, speed.y)));
 
 
-        space_required += liaz_length;
-    }
+    //    // format LIAZ message
+    //    liaz_length = nmea_printf_buffer(liaz, sizeof(liaz),
+    //        "$LIAZ,%s,%.2f,%.2f,%.2f,%.2f,%s,%s,%.2f",
+    //        tstring,
+    //        yaw_deg, // This is a TRUE NORTH value
+    //        roll_deg < 0 ? '-' : '+', fabs(roll_deg),    // always show + or - symbol
+    //        pitch_deg < 0 ? '-' : '+', fabs(pitch_deg),   // always show + or - symbol
+    //        heading,
+    //        lat_string,
+    //        lng_string,
+    //        loc.alt * 0.01f);
+
+
+    //    space_required += liaz_length;
+    //}
 #endif
 
     // send to all NMEA output ports
