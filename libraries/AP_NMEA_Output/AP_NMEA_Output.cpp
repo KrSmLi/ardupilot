@@ -291,7 +291,7 @@ void AP_NMEA_Output::update()
     }
 
     uint16_t liaz_length = 0;
-    char liaz[100] = 0;
+    char liaz[100];
     if (true) {
         // get roll, pitch, yaw
         const float roll_deg = wrap_180(degrees(ahrs.get_roll()));
