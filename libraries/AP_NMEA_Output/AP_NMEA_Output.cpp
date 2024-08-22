@@ -299,7 +299,7 @@ void AP_NMEA_Output::update()
         const float yaw_deg = wrap_360(degrees(ahrs.get_yaw()));
 
         // get speed and heading
-        const vector2f speed = ahrs.groundspeed_vector();
+        const Vector2f speed = ahrs.groundspeed_vector();
         const float heading = wrap_360(degrees(atan2f(speed.x, speed.y)));
 
 
