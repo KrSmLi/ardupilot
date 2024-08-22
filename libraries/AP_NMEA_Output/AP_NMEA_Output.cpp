@@ -308,7 +308,7 @@ void AP_NMEA_Output::update()
             "$LIAZ,%s,%.2f,%.2f,%.2f,%.2f,%s,%s,%.2f",
             tstring,
             yaw_deg, // This is a TRUE NORTH value
-            roll_deg < 0 ? '-' : '+', fabs(roll_d\eg),    // always show + or - symbol
+            roll_deg < 0 ? '-' : '+', fabs(roll_deg),    // always show + or - symbol
             pitch_deg < 0 ? '-' : '+', fabs(pitch_deg),   // always show + or - symbol
             heading,
             lat_string,
