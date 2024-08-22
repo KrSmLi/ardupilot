@@ -292,7 +292,7 @@ void AP_NMEA_Output::update()
 
     uint16_t liaz_length = 0;
     char liaz[100];
-    if ((_message_enable_bitmask.get() & static_cast<int16_t>(enabled_messages::LIAZ)) != 0) {
+    if ((_message_enable_bitmask.get() & static_cast<int16_t>(Enabled_Messages::LIAZ)) != 0) {
         // get roll, pitch, yaw
         const float roll_deg = wrap_180(degrees(ahrs.get_roll()));
         const float pitch_deg = wrap_180(degrees(ahrs.get_pitch()));
