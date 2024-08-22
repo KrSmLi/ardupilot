@@ -290,22 +290,33 @@ void AP_NMEA_Output::update()
         space_required += pashr_length;
     }
 
-    if ((_message_enable_bitmask.get() & static_cast<int16_t>(Enabled_Messages::PASHR)) != 0) {
+    uint16_t liaz_length = 0;
+    char liaz[100] = 0;
+    if (true) {
         // get roll, pitch, yaw
         const float roll_deg = wrap_180(degrees(ahrs.get_roll()));
         const float pitch_deg = wrap_180(degrees(ahrs.get_pitch()));
         const float yaw_deg = wrap_360(degrees(ahrs.get_yaw()));
 
-        // format PASHR message
-        pashr_length = nmea_printf_buffer(pashr, sizeof(pashr),
-            "$PASHR,%s,%.2f,T,%c%.2f",
+        // get speed and heading
+        const Vector2f speed = ahrs.groundspeed_vector();
+        const float heading = wrap_360(degrees(atan2f(speed.x, speed.y)));
+
+
+        // format LIAZ message
+        liaz_length = nmea_printf_buffer(liaz, sizeof(liaz),
+            "$LIAZ,%s,%.2f,%.2f,%.2f,%.2f,%s,%s,%.2f",
             tstring,
             yaw_deg, // This is a TRUE NORTH value
-            roll_deg < 0 ? '-' : '+', fabs(roll_deg),    // always show + or - symbol
+            roll_deg < 0 ? '-' : '+', fabs(roll_d\eg),    // always show + or - symbol
             pitch_deg < 0 ? '-' : '+', fabs(pitch_deg),   // always show + or - symbol
+            heading,
+            lat_string,
+            lng_string,
+            loc.alt * 0.01f);
 
 
-        space_required += pashr_length;
+        space_required += liaz_length;
     }
 #endif
 
@@ -325,6 +336,10 @@ void AP_NMEA_Output::update()
 
         if (pashr_length > 0) {
             _uart[i]->write(pashr);
+        }
+
+        if (liaz_length > 0) {
+            _uart[i]->write(liaz);
         }
     }
 }
