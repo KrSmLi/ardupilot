@@ -131,6 +131,8 @@ void AP_NMEA_Output::update()
     const bool pos_valid = (gps_status >= AP_GPS::GPS_OK_FIX_3D);
     loc = gps.location();
 #endif
+
+
      
     // format latitude
     char lat_string[13];
@@ -298,8 +300,21 @@ void AP_NMEA_Output::update()
 
     char alt_cm[11];
     int32_t alt_rngf_cm;
-    SurfaceDistance.get_rangefinder_height_interpolated_cm(alt_rngf_cm);
-    hal.util->snprintf(alt_cm,sizeof(alt_cm),"%c%d", alt_rngf_cm < 0 ? '-' : '+', fabs(alt_rngf_cm))
+    float alt_rngf = 0;
+
+#if AP_RANGEFINDER_ENABLED
+    RangeFinder *rangefinder = RangeFinder::get_singleton();
+    if (rangefinder == nullptr) {
+        return;
+    }
+    AP_RangeFinder_Backend *s = rangefinder->find_instance(ROTATION_PITCH_270);
+    if (s == nullptr) {
+        return;
+    }
+    alt_rngf = s->distance();
+
+    //hal.util->snprintf(alt_cm,sizeof(alt_cm),"%c%d", alt_rngf_cm < 0 ? '-' : '+', fabs(alt_rngf_cm))
+#endif
 
     uint16_t liaz_length = 0;
     char liaz[100];
@@ -316,7 +331,7 @@ void AP_NMEA_Output::update()
 
         // format liaz message
         liaz_length = nmea_printf_buffer(liaz, sizeof(liaz),
-            "$LIAZ,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%s,,",
+            "$LIAZ,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,,",
             tstring,
             yaw_deg, // this is a true north value
             roll_deg < 0 ? '-' : '+', fabs(roll_deg),    // always show + or - symbol
@@ -325,7 +340,7 @@ void AP_NMEA_Output::update()
             lat_string,
             lng_string,
             loc.alt * 0.01f,
-            alt_cm);
+            alt_rngf);
 
 
         space_required += liaz_length;
