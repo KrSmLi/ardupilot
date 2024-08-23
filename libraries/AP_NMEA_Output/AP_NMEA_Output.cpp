@@ -294,7 +294,7 @@ void AP_NMEA_Output::update()
         space_required += pashr_length;
     }
 
-    cahr alt_cm[11];
+    char alt_cm[11];
     int32_t alt_rngf_cm;
     AP_SurfaceDistance::get_rangefinder_height_interpolated_cm(alt_rngf_cm);
     hal.util->snprintf(alt_cm,sizeof(alt_cm),"%c%d", alt_rngf_cm < 0 ? '-' : '+', fabs(alt_rngf_cm))
