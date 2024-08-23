@@ -296,7 +296,6 @@ void AP_NMEA_Output::update()
         space_required += pashr_length;
     }
 
-    const AP_SurfaceDistance::AP_SurfaceDistance SurfaceDistance;
 
     char alt_cm[11];
     int32_t alt_rngf_cm;
