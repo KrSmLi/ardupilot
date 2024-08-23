@@ -21,6 +21,9 @@
 
 #include "AP_NMEA_Output_config.h"
 
+#include <AP_RangeFinder/AP_RangeFinder.h>
+#include <AP_SurfaceDistance/AP_SurfaceDistance.h>
+
 #if HAL_NMEA_OUTPUT_ENABLED
 
 #ifndef NMEA_MAX_OUTPUTS

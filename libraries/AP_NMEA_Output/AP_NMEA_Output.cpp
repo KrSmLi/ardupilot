@@ -32,6 +32,9 @@
 #include <time.h>
 #include <AP_AHRS/AP_AHRS_config.h>
 
+#include <AP_RangeFinder/AP_RangeFinder.h>
+#include <AP_SurfaceDistance/AP_SurfaceDistance.h>
+
 #if AP_AHRS_ENABLED
 #include <AP_AHRS/AP_AHRS.h>
 #endif
@@ -68,6 +71,7 @@ const AP_Param::GroupInfo AP_NMEA_Output::var_info[] = {
 
 void AP_NMEA_Output::init()
 {
+    
     const AP_SerialManager& sm = AP::serialmanager();
 
     _num_outputs = 0;
@@ -127,7 +131,7 @@ void AP_NMEA_Output::update()
     const bool pos_valid = (gps_status >= AP_GPS::GPS_OK_FIX_3D);
     loc = gps.location();
 #endif
-
+     
     // format latitude
     char lat_string[13];
     double deg = fabs(loc.lat * 1.0e-7f);
@@ -290,6 +294,11 @@ void AP_NMEA_Output::update()
         space_required += pashr_length;
     }
 
+    cahr alt_cm[11];
+    int32_t alt_rngf_cm;
+    AP_SurfaceDistance::get_rangefinder_height_interpolated_cm(alt_rngf_cm);
+    hal.util->snprintf(alt_cm,sizeof(alt_cm),"%c%d", alt_rngf_cm < 0 ? '-' : '+', fabs(alt_rngf_cm))
+
     uint16_t liaz_length = 0;
     char liaz[100];
     if ((_message_enable_bitmask.get() & static_cast<int16_t>(Enabled_Messages::LIAZ)) != 0) {
@@ -305,7 +314,7 @@ void AP_NMEA_Output::update()
 
         // format liaz message
         liaz_length = nmea_printf_buffer(liaz, sizeof(liaz),
-            "$LIAZ,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,,",
+            "$LIAZ,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%s,,",
             tstring,
             yaw_deg, // this is a true north value
             roll_deg < 0 ? '-' : '+', fabs(roll_deg),    // always show + or - symbol
@@ -313,7 +322,8 @@ void AP_NMEA_Output::update()
             heading,
             lat_string,
             lng_string,
-            loc.alt * 0.01f);
+            loc.alt * 0.01f,
+            alt_cm);
 
 
         space_required += liaz_length;
