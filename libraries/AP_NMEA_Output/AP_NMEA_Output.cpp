@@ -294,6 +294,8 @@ void AP_NMEA_Output::update()
         space_required += pashr_length;
     }
 
+    AP_SurfaceDistance SurfaceDistance;
+
     char alt_cm[11];
     int32_t alt_rngf_cm;
     SurfaceDistance.get_rangefinder_height_interpolated_cm(alt_rngf_cm);

@@ -67,7 +67,8 @@ private:
     AP_Int16 _interval_ms;
     AP_Int16 _message_enable_bitmask;
 
-    AP_SurfaceDistance SurfaceDistance;
+
+
 
 };
 
