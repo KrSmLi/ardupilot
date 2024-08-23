@@ -66,6 +66,9 @@ private:
 
     AP_Int16 _interval_ms;
     AP_Int16 _message_enable_bitmask;
+
+    bool AP_SurfaceDistance::get_rangefinder_height_interpolated_cm(int32_t& ret) const;
+
 };
 
 #endif  // !HAL_NMEA_OUTPUT_ENABLED
