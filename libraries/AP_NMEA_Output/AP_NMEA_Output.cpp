@@ -296,7 +296,7 @@ void AP_NMEA_Output::update()
 
     char alt_cm[11];
     int32_t alt_rngf_cm;
-    get_rangefinder_height_interpolated_cm(alt_rngf_cm);
+    SurfaceDistance.get_rangefinder_height_interpolated_cm(alt_rngf_cm);
     hal.util->snprintf(alt_cm,sizeof(alt_cm),"%c%d", alt_rngf_cm < 0 ? '-' : '+', fabs(alt_rngf_cm))
 
     uint16_t liaz_length = 0;

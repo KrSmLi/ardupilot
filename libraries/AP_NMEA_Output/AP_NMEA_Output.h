@@ -67,7 +67,7 @@ private:
     AP_Int16 _interval_ms;
     AP_Int16 _message_enable_bitmask;
 
-    AP_SurfaceDistance::get_rangefinder_height_interpolated_cm(int32_t& ret) const;
+    AP_SurfaceDistance SurfaceDistance;
 
 };
 
