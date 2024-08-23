@@ -300,6 +300,7 @@ void AP_NMEA_Output::update()
     //char alt_cm[11];
     //int32_t alt_rngf_cm;
     float alt_rngf = 0;
+    float alt_baro = 0;
 
 #if AP_RANGEFINDER_ENABLED
     RangeFinder *rangefinder = RangeFinder::get_singleton();
@@ -313,6 +314,11 @@ void AP_NMEA_Output::update()
     alt_rngf = s->distance();
 
     //hal.util->snprintf(alt_cm,sizeof(alt_cm),"%c%d", alt_rngf_cm < 0 ? '-' : '+', fabs(alt_rngf_cm))
+#endif
+
+#if AP_BARO_ENABLED
+    const AP_Baro& barometer = AP::baro();
+    alt_baro = barometer.get_altitude_AMSL();
 #endif
 
     uint16_t liaz_length = 0;
@@ -330,7 +336,7 @@ void AP_NMEA_Output::update()
 
         // format liaz message
         liaz_length = nmea_printf_buffer(liaz, sizeof(liaz),
-            "$LIAZ,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,,",
+            "$LIAZ,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,%.2f,,",
             tstring,
             yaw_deg, // this is a true north value
             roll_deg < 0 ? '-' : '+', fabs(roll_deg),    // always show + or - symbol
@@ -339,7 +345,8 @@ void AP_NMEA_Output::update()
             lat_string,
             lng_string,
             loc.alt * 0.01f,
-            alt_rngf);
+            alt_rngf,
+            alt_baro);
 
 
         space_required += liaz_length;

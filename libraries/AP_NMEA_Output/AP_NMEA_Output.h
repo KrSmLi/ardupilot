@@ -24,6 +24,7 @@
 #include <AP_RangeFinder/AP_RangeFinder.h>
 #include <AP_RangeFinder/AP_RangeFinder_Backend.h>
 #include <AP_SurfaceDistance/AP_SurfaceDistance.h>
+#include <AP_Baro/AP_Baro.h>
 
 #if HAL_NMEA_OUTPUT_ENABLED
 
