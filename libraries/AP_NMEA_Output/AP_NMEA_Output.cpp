@@ -336,7 +336,7 @@ void AP_NMEA_Output::update()
 
         // format liaz message
         liaz_length = nmea_printf_buffer(liaz, sizeof(liaz),
-            "$LIAZ,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,%.2f,,",
+            "$LIAZ,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,%.2f,%.2f,%.2f,,",
             tstring,
             yaw_deg, // this is a true north value
             roll_deg < 0 ? '-' : '+', fabs(roll_deg),    // always show + or - symbol
@@ -346,7 +346,9 @@ void AP_NMEA_Output::update()
             lng_string,
             loc.alt * 0.01f,
             alt_rngf,
-            alt_baro);
+            alt_baro,
+            speed.x,
+            speed.y);
 
 
         space_required += liaz_length;
