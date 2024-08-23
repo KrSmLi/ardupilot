@@ -297,8 +297,8 @@ void AP_NMEA_Output::update()
     }
 
 
-    char alt_cm[11];
-    int32_t alt_rngf_cm;
+    //char alt_cm[11];
+    //int32_t alt_rngf_cm;
     float alt_rngf = 0;
 
 #if AP_RANGEFINDER_ENABLED
