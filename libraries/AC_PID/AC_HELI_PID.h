@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <cmath>
 #include "AC_PID.h"
+#include <Filter/HarmonicNotchFilter.h>
 
 static const float AC_PID_LEAK_MIN = 0.1f;  // Default I-term Leak Minimum
 
