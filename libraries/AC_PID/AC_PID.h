@@ -10,6 +10,7 @@
 #include <Filter/SlewLimiter.h>
 #include <Filter/NotchFilter.h>
 #include <Filter/AP_Filter.h>
+#include <Filter/HarmonicNotchFilter.h>
 
 #define AC_PID_TFILT_HZ_DEFAULT  0.0f   // default input filter frequency
 #define AC_PID_EFILT_HZ_DEFAULT  0.0f   // default input filter frequency
