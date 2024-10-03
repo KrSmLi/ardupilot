@@ -95,28 +95,28 @@ const AP_Param::GroupInfo AC_PID::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("NEF", 16, AC_PID, _notch_E_filter, 0),
 
-    // @Param: NTF
+    // @Param: NTF2
     // @DisplayName: PID Target notch filter index
     // @Description: PID Target notch filter index
     // @Range: 1 8
     // @User: Advanced
     AP_GROUPINFO("NTF2", 17, AC_PID, _notch_T_filter2, 0),
 
-    // @Param: NEF
+    // @Param: NEF2
     // @DisplayName: PID Error notch filter index
     // @Description: PID Error notch filter index
     // @Range: 1 8
     // @User: Advanced
     AP_GROUPINFO("NEF2", 18, AC_PID, _notch_E_filter2, 0),
 
-        // @Param: NTF
+    // @Param: NTF3
     // @DisplayName: PID Target notch filter index
     // @Description: PID Target notch filter index
     // @Range: 1 8
     // @User: Advanced
     AP_GROUPINFO("NTF3", 19, AC_PID, _notch_T_filter3, 0),
 
-    // @Param: NEF
+    // @Param: NEF3
     // @DisplayName: PID Error notch filter index
     // @Description: PID Error notch filter index
     // @Range: 1 8
