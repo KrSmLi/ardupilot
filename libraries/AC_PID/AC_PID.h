@@ -148,6 +148,41 @@ public:
     // parameter var table
     static const struct AP_Param::GroupInfo var_info[];
 
+    class HarmonicNotch {
+    public:
+        HarmonicNotchFilterParams params;
+        HarmonicNotchFilterVector3f filter[INS_MAX_INSTANCES];
+
+        uint8_t num_dynamic_notches;
+
+        // the current center frequency for the notch
+        float calculated_notch_freq_hz[INS_MAX_NOTCHES];
+        uint8_t num_calculated_notch_frequencies;
+
+        // runtime update of notch parameters
+        void update_params(uint8_t instance, bool converging, float gyro_rate);
+
+        // Update the harmonic notch frequencies
+        void update_freq_hz(float scaled_freq);
+        void update_frequencies_hz(uint8_t num_freqs, const float scaled_freq[]);
+
+        // enable/disable the notch
+        void set_inactive(bool _inactive) {
+            inactive = _inactive;
+        }
+
+        bool is_inactive(void) const {
+            return inactive;
+        }
+
+    private:
+        // support for updating harmonic filter at runtime
+        float last_center_freq_hz[INS_MAX_INSTANCES];
+        float last_bandwidth_hz[INS_MAX_INSTANCES];
+        float last_attenuation_dB[INS_MAX_INSTANCES];
+        bool inactive;
+    } harmonic_notch;
+
 protected:
 
     //  update_i - update the integral
@@ -209,40 +244,7 @@ protected:
 
     AP_PIDInfo _pid_info;
 
-    class HarmonicNotch {
-    public:
-        HarmonicNotchFilterParams params;
-        HarmonicNotchFilterVector3f filter[INS_MAX_INSTANCES];
-
-        uint8_t num_dynamic_notches;
-
-        // the current center frequency for the notch
-        float calculated_notch_freq_hz[INS_MAX_NOTCHES];
-        uint8_t num_calculated_notch_frequencies;
-
-        // runtime update of notch parameters
-        void update_params(uint8_t instance, bool converging, float gyro_rate);
-
-        // Update the harmonic notch frequencies
-        void update_freq_hz(float scaled_freq);
-        void update_frequencies_hz(uint8_t num_freqs, const float scaled_freq[]);
-
-        // enable/disable the notch
-        void set_inactive(bool _inactive) {
-            inactive = _inactive;
-        }
-
-        bool is_inactive(void) const {
-            return inactive;
-        }
-
-    private:
-        // support for updating harmonic filter at runtime
-        float last_center_freq_hz[INS_MAX_INSTANCES];
-        float last_bandwidth_hz[INS_MAX_INSTANCES];
-        float last_attenuation_dB[INS_MAX_INSTANCES];
-        bool inactive;
-    } harmonic_notch;
+    
 
 private:
     const float default_kp;
