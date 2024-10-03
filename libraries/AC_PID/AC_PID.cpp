@@ -94,7 +94,35 @@ const AP_Param::GroupInfo AC_PID::var_info[] = {
     // @Range: 1 8
     // @User: Advanced
     AP_GROUPINFO("NEF", 16, AC_PID, _notch_E_filter, 0),
-#endif
+
+    // @Param: NTF
+    // @DisplayName: PID Target notch filter index
+    // @Description: PID Target notch filter index
+    // @Range: 1 8
+    // @User: Advanced
+    AP_GROUPINFO("NTF2", 17, AC_PID, _notch_T_filter2, 0),
+
+    // @Param: NEF
+    // @DisplayName: PID Error notch filter index
+    // @Description: PID Error notch filter index
+    // @Range: 1 8
+    // @User: Advanced
+    AP_GROUPINFO("NEF2", 18, AC_PID, _notch_E_filter2, 0),
+
+        // @Param: NTF
+    // @DisplayName: PID Target notch filter index
+    // @Description: PID Target notch filter index
+    // @Range: 1 8
+    // @User: Advanced
+    AP_GROUPINFO("NTF3", 19, AC_PID, _notch_T_filter3, 0),
+
+    // @Param: NEF
+    // @DisplayName: PID Error notch filter index
+    // @Description: PID Error notch filter index
+    // @Range: 1 8
+    // @User: Advanced
+    AP_GROUPINFO("NEF3", 20, AC_PID, _notch_E_filter3, 0),
+    #endif
 
     AP_GROUPEND
 };
@@ -156,7 +184,7 @@ void AC_PID::set_slew_limit(float smax)
 void AC_PID::set_notch_sample_rate(float sample_rate)
 {
 #if AP_FILTER_ENABLED
-    if (_notch_T_filter == 0 && _notch_E_filter == 0) {
+    if (_notch_T_filter == 0 && _notch_E_filter == 0 && _notch_T_filter2 == 0 && _notch_E_filter2 == 0 && _notch_T_filter3 == 0 && _notch_E_filter3 == 0) {
         return;
     }
 
@@ -183,6 +211,55 @@ void AC_PID::set_notch_sample_rate(float sample_rate)
             _notch_E_filter.set(0);
         }
     }
+
+    if (_notch_T_filter2 != 0) {
+        if (_target_notch2 == nullptr) {
+            _target_notch2 = NEW_NOTHROW NotchFilterFloat();
+        }
+        AP_Filter* filter = AP::filters().get_filter(_notch_T_filter2);
+        if (filter != nullptr && !filter->setup_notch_filter(*_target_notch2, sample_rate)) {
+            delete _target_notch2;
+            _target_notch2 = nullptr;
+            _notch_T_filter2.set(0);
+        }
+    }
+
+    if (_notch_E_filter2 != 0) {
+        if (_error_notch2 == nullptr) {
+            _error_notch2 = NEW_NOTHROW NotchFilterFloat();
+        }
+        AP_Filter* filter = AP::filters().get_filter(_notch_E_filter2);
+        if (filter != nullptr && !filter->setup_notch_filter(*_error_notch2, sample_rate)) {
+            delete _error_notch2;
+            _error_notch2 = nullptr;
+            _notch_E_filter2.set(0);
+        }
+    }
+
+    if (_notch_T_filter3 != 0) {
+        if (_target_notch3 == nullptr) {
+            _target_notch3 = NEW_NOTHROW NotchFilterFloat();
+        }
+        AP_Filter* filter = AP::filters().get_filter(_notch_T_filter3);
+        if (filter != nullptr && !filter->setup_notch_filter(*_target_notch3, sample_rate)) {
+            delete _target_notch3;
+            _target_notch3 = nullptr;
+            _notch_T_filter3.set(0);
+        }
+    }
+
+    if (_notch_E_filter3 != 0) {
+        if (_error_notch3 == nullptr) {
+            _error_notch3 = NEW_NOTHROW NotchFilterFloat();
+        }
+        AP_Filter* filter = AP::filters().get_filter(_notch_E_filter3);
+        if (filter != nullptr && !filter->setup_notch_filter(*_error_notch3, sample_rate)) {
+            delete _error_notch3;
+            _error_notch3 = nullptr;
+            _notch_E_filter3.set(0);
+        }
+    }
+
 #endif
 }
 
@@ -209,6 +286,14 @@ float AC_PID::update_all(float target, float measurement, float dt, bool limit, 
             _target_notch->reset();
             _target = _target_notch->apply(_target);
         }
+        if (_target_notch2 != nullptr) {
+            _target_notch2->reset();
+            _target = _target_notch2->apply(_target);
+        }
+        if (_target_notch3 != nullptr) {
+            _target_notch3->reset();
+            _target = _target_notch3->apply(_target);
+        }
 #endif
 
         // Calculate error and reset error filter
@@ -217,6 +302,14 @@ float AC_PID::update_all(float target, float measurement, float dt, bool limit, 
         if (_error_notch != nullptr) {
             _error_notch->reset();
             _error = _error_notch->apply(_error);
+        }
+        if (_error_notch2 != nullptr) {
+            _error_notch2->reset();
+            _error = _error_notch2->apply(_error);
+        }
+        if (_error_notch3 != nullptr) {
+            _error_notch3->reset();
+            _error = _error_notch3->apply(_error);
         }
 #endif
         // Zero derivatives
@@ -232,6 +325,12 @@ float AC_PID::update_all(float target, float measurement, float dt, bool limit, 
         if (_target_notch != nullptr) {
             target = _target_notch->apply(target);
         }
+        if (_target_notch2 != nullptr) {
+            target = _target_notch2->apply(target);
+        }
+        if (_target_notch3 != nullptr) {
+            target = _target_notch3->apply(target);
+        }
 #endif
         _target += get_filt_T_alpha(dt) * (target - _target);
 
@@ -241,6 +340,12 @@ float AC_PID::update_all(float target, float measurement, float dt, bool limit, 
 #if AP_FILTER_ENABLED
         if (_error_notch != nullptr) {
             error = _error_notch->apply(error);
+        }
+        if (_error_notch2 != nullptr) {
+            error = _error_notch2->apply(error);
+        }
+        if (_error_notch3 != nullptr) {
+            error = _error_notch3->apply(error);
         }
 #endif
         _error += get_filt_E_alpha(dt) * (error - _error);

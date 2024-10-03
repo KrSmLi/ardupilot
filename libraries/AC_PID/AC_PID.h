@@ -168,6 +168,11 @@ protected:
 #if AP_FILTER_ENABLED
     AP_Int8 _notch_T_filter;
     AP_Int8 _notch_E_filter;
+    AP_Int8 _notch_T_filter2;
+    AP_Int8 _notch_E_filter2;
+    AP_Int8 _notch_T_filter3;
+    AP_Int8 _notch_E_filter3;
+
 #endif
 
     // the time constant tau is not currently configurable, but is set
@@ -194,6 +199,11 @@ protected:
 #if AP_FILTER_ENABLED
     NotchFilterFloat* _target_notch;
     NotchFilterFloat* _error_notch;
+    NotchFilterFloat* _target_notch2;
+    NotchFilterFloat* _error_notch2;
+    NotchFilterFloat* _target_notch3;
+    NotchFilterFloat* _error_notch3;
+
 #endif
 
     AP_PIDInfo _pid_info;
