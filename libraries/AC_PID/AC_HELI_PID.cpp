@@ -126,7 +126,6 @@ const AP_Param::GroupInfo AC_HELI_PID::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("NEF3", 20, AC_PID, _notch_E_filter3, 0),
 #endif
-#endif
 
     AP_GROUPEND
 };
