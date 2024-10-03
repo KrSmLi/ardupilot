@@ -128,7 +128,7 @@ const AP_Param::GroupInfo AC_PID::var_info[] = {
     // @DisplayName: Target harmonics notch filter
     // @Description: Target harmonics notch filter
     // @User: Advanced
-    AP_SUBGROUPINFO(harmonic_notch.params, "_HNFT_", 21, AC_PID, HarmonicNotchFilterParams),
+    //AP_SUBGROUPINFO(harmonic_notch.params, "_HNFT_", 21, AC_PID, HarmonicNotchFilterParams),
 
     AP_GROUPEND
 };
