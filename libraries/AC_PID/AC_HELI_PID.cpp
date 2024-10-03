@@ -127,12 +127,6 @@ const AP_Param::GroupInfo AC_HELI_PID::var_info[] = {
     AP_GROUPINFO("NEF3", 20, AC_HELI_PID, _notch_E_filter3, 0),
 #endif
 
-#if AP_HNTCH_ENABLE
-     // @Param: HT
-     // @DisplayName: Harmonic target filter
-     AP_SUBGROUPINFO(harmonic_notch.params, "HT", 21, AC_PID, HarmonicNotchFilterParams),
-#endif
-
     AP_GROUPEND
 };
 
