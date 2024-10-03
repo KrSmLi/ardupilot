@@ -99,18 +99,6 @@ const AP_Param::GroupInfo AC_HELI_PID::var_info[] = {
     AP_GROUPINFO("NEF", 16, AC_HELI_PID, _notch_E_filter, 0),
 #endif
 
-#if AP_INERTIALSENSOR_HARMONICNOTCH_ENABLED
-    // @Group: _HNTCH_
-    // @Path: ../Filter/HarmonicNotchFilter.cpp
-    AP_SUBGROUPINFO(harmonic_notches[0].params, "_HNT",  17, AC_HELI_PID, HarmonicNotchFilterParams),
-
-#if HAL_INS_NUM_HARMONIC_NOTCH_FILTERS > 1
-    // @Group: _HNTC2_
-    // @Path: ../Filter/HarmonicNotchFilter.cpp
-    AP_SUBGROUPINFO(harmonic_notches[1].params, "_HNE",  18, AC_HELI_PID, HarmonicNotchFilterParams),
-#endif
-#endif
-
     AP_GROUPEND
 };
 
