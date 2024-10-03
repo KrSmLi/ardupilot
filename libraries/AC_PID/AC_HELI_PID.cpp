@@ -97,6 +97,35 @@ const AP_Param::GroupInfo AC_HELI_PID::var_info[] = {
     // @Range: 1 8
     // @User: Advanced
     AP_GROUPINFO("NEF", 16, AC_HELI_PID, _notch_E_filter, 0),
+
+    // @Param: NTF2
+    // @DisplayName: PID Target notch filter index2
+    // @Description: PID Target notch filter index2
+    // @Range: 1 8
+    // @User: Advanced
+    AP_GROUPINFO("NTF2", 17, AC_PID, _notch_T_filter2, 0),
+
+    // @Param: NEF2
+    // @DisplayName: PID Error notch filter index2
+    // @Description: PID Error notch filter index2
+    // @Range: 1 8
+    // @User: Advanced
+    AP_GROUPINFO("NEF2", 18, AC_PID, _notch_E_filter2, 0),
+
+    // @Param: NTF3
+    // @DisplayName: PID Target notch filter index3
+    // @Description: PID Target notch filter index3
+    // @Range: 1 8
+    // @User: Advanced
+    AP_GROUPINFO("NTF3", 19, AC_PID, _notch_T_filter3, 0),
+
+    // @Param: NEF3
+    // @DisplayName: PID Error notch filter index3
+    // @Description: PID Error notch filter index3
+    // @Range: 1 8
+    // @User: Advanced
+    AP_GROUPINFO("NEF3", 20, AC_PID, _notch_E_filter3, 0),
+#endif
 #endif
 
     AP_GROUPEND
