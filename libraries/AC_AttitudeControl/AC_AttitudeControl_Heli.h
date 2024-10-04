@@ -108,7 +108,7 @@ public:
     class HarmonicNotch {
     public:
         HarmonicNotchFilterParams params;
-        HarmonicNotchFilterVector3f filter[INS_MAX_INSTANCES];
+        HarmonicNotchFilterFloat filter;
 
         uint8_t num_dynamic_notches;
 
@@ -134,11 +134,13 @@ public:
 
     private:
         // support for updating harmonic filter at runtime
-        float last_center_freq_hz[INS_MAX_INSTANCES];
-        float last_bandwidth_hz[INS_MAX_INSTANCES];
-        float last_attenuation_dB[INS_MAX_INSTANCES];
+        float last_center_freq_hz;
+        float last_bandwidth_hz;
+        float last_attenuation_dB;
         bool inactive;
     } harmonic_notch;
+
+ 
 
 private:
 

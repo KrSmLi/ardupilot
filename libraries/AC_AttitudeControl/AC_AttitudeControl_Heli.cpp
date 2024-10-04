@@ -304,9 +304,9 @@ const AP_Param::GroupInfo AC_AttitudeControl_Heli::var_info[] = {
     AP_GROUPINFO("PIRO_COMP",    5, AC_AttitudeControl_Heli, _piro_comp_enabled, 0),
     
 #if AP_HNTCH_ENABLE
-    // @Param: RPHNT_
+    // @Param: RHFN_
     // @DisplayName: Harmonic target filter
-    AP_SUBGROUPINFO(harmonic_notch.params, "RPHNT_", 6, AC_AttitudeControl_Heli, HarmonicNotchFilterParams),
+    AP_SUBGROUPINFO(harmonic_notch.params, "RHNF_", 6, AC_AttitudeControl_Heli, HarmonicNotchFilterParams),
 #endif
 
     AP_GROUPEND
@@ -323,6 +323,35 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
     _flags_heli.tail_passthrough = false;
 #if AP_FILTER_ENABLED
     set_notch_sample_rate(AP::scheduler().get_loop_rate_hz());
+#endif
+
+#if AP_HNTCH_ENABLE
+    harmonic_notch.params.init();
+
+    if (harmonic_notch.params.enabled()) {
+    harmonic_notch.num_calculated_notch_frequencies = 1;
+    harmonic_notch.num_dynamic_notches = 1;
+#if APM_BUILD_COPTER_OR_HELI || APM_BUILD_TYPE(APM_BUILD_ArduPlane)
+        if (harmonic_notch.params.hasOption(HarmonicNotchFilterParams::Options::DynamicHarmonic)) {
+            AP_Motors* motors = AP::motors();
+            if (motors != nullptr) {
+                notch.num_dynamic_notches = __builtin_popcount(motors->get_motor_mask());
+            }
+        }
+        notch.params.set_default_harmonics(1);
+#endif
+    }
+
+    //only for x and y
+    for(uint8_t i=0; i<XYZ_AXIS_COUNT-1; i++) {
+        if (harmonic_notch.params.enabled()) {
+            harmonic_notch.filter[i].allocate_filters(harmonic_notch.num_dynamic_notches,
+                harmonic_notch.params.harmonics(),
+                harmonic_notch.params.num_composite_notches());
+            harmonic_notch.filter[i].init(AP::scheduler().get_loop_rate_hz(), harmonic_notch.params);
+        }
+    }
+    
 #endif
 }
 
@@ -469,6 +498,30 @@ void AC_AttitudeControl_Heli::rate_bf_to_motor_roll_pitch(const Vector3f &rate_r
     if (_flags_heli.leaky_i) {
         _pid_rate_roll.update_leaky_i(AC_ATTITUDE_HELI_RATE_INTEGRATOR_LEAK_RATE);
     }
+
+    float rate_roll_target_rads_filtered = rate_roll_target_rads;
+#if AP_HNTCH_ENABLE
+    if (harmonic_notch.params.enabled()) {
+        bool inactive = harmonic_notch.is_inactive();
+
+        if (inactive) {
+            harmonic_notch.filter.reset();
+        } else
+        {
+            rate_roll_target_rads_filtered = harmonic_notch.filter.apply(rate_roll_target_rads_filtered);
+        }
+    }
+    
+    if (isnan(rate_roll_target_rads_filtered) || isinf(rate_roll_target_rads_filtered)) {
+        harmonic_notch.filter.reset();
+    }
+    else {
+        rate_roll_target_rads = rate_roll_target_rads_filtered;
+    }
+#endif
+
+
+
     float roll_pid = _pid_rate_roll.update_all(rate_roll_target_rads, rate_rads.x, _dt, _motors.limit.roll) + _actuator_sysid.x;
 
     if (_flags_heli.leaky_i) {
