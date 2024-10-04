@@ -337,15 +337,14 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
 #endif
     }
 
-    //only for x and y
-    for(uint8_t i=0; i<XYZ_AXIS_COUNT-1; i++) {
-        if (harmonic_notch.params.enabled()) {
-            harmonic_notch.filter[i].allocate_filters(harmonic_notch.num_dynamic_notches,
-                harmonic_notch.params.harmonics(),
-                harmonic_notch.params.num_composite_notches());
-            harmonic_notch.filter[i].init(AP::scheduler().get_loop_rate_hz(), harmonic_notch.params);
-        }
+    
+    if (harmonic_notch.params.enabled()) {
+        harmonic_notch.filter.allocate_filters(harmonic_notch.num_dynamic_notches,
+        harmonic_notch.params.harmonics(),
+        harmonic_notch.params.num_composite_notches());
+        harmonic_notch.filter.init(AP::scheduler().get_loop_rate_hz(), harmonic_notch.params);
     }
+   
     
 #endif
 }
