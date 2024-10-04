@@ -2,6 +2,7 @@
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Scheduler/AP_Scheduler.h>
 #include <AP_Vehicle/AP_Vehicle_Type.h>
+#include <GCS_MAVLink/GCS.h>
 
 // table of user settable parameters
 const AP_Param::GroupInfo AC_AttitudeControl_Heli::var_info[] = {
@@ -337,14 +338,15 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
 #endif
     }
 
-    
+     
     if (harmonic_notch.params.enabled()) {
         harmonic_notch.filter.allocate_filters(harmonic_notch.num_dynamic_notches,
         harmonic_notch.params.harmonics(),
         harmonic_notch.params.num_composite_notches());
         harmonic_notch.filter.init(AP::scheduler().get_loop_rate_hz(), harmonic_notch.params);
     }
-   
+    
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH initialized with params: %f, %f, %f", harmonic_notch.params.enable, harmonic_notch.params.attenuation_dB, harmonic_notch.params.center_freq_hz)
     
 #endif
 }
