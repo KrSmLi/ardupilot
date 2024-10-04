@@ -346,7 +346,7 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
         harmonic_notch.filter.init(AP::scheduler().get_loop_rate_hz(), harmonic_notch.params);
     }
     
-    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH initialized with params: %f, %f, %f", harmonic_notch.params.enable, harmonic_notch.params.attenuation_dB, harmonic_notch.params.center_freq_hz)
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH initialized with params: %f, %f", harmonic_notch.params.attenuation_dB, harmonic_notch.params.center_freq_hz)
     
 #endif
 }
