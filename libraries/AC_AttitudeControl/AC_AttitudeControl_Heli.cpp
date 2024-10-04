@@ -333,12 +333,6 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
     harmonic_notch.num_calculated_notch_frequencies = 1;
     harmonic_notch.num_dynamic_notches = 1;
 #if APM_BUILD_COPTER_OR_HELI || APM_BUILD_TYPE(APM_BUILD_ArduPlane)
-        if (harmonic_notch.params.hasOption(HarmonicNotchFilterParams::Options::DynamicHarmonic)) {
-            AP_Motors* motors = AP::motors();
-            if (motors != nullptr) {
-                notch.num_dynamic_notches = __builtin_popcount(motors->get_motor_mask());
-            }
-        }
         notch.params.set_default_harmonics(1);
 #endif
     }
