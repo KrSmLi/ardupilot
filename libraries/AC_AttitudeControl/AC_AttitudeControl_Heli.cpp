@@ -1,6 +1,7 @@
 #include "AC_AttitudeControl_Heli.h"
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Scheduler/AP_Scheduler.h>
+#include <AP_Vehicle/AP_Vehicle_Type.h>
 
 // table of user settable parameters
 const AP_Param::GroupInfo AC_AttitudeControl_Heli::var_info[] = {
