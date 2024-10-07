@@ -308,7 +308,7 @@ const AP_Param::GroupInfo AC_AttitudeControl_Heli::var_info[] = {
 #if AP_HNTCH_ENABLE
     // @Param: RHFN_
     // @DisplayName: Harmonic target filter
-    AP_SUBGROUPINFO(harmonic_notch.params, "RHNF_", 6, AC_AttitudeControl_Heli, HarmonicNotchFilterParams),
+    AP_SUBGROUPINFO(harmonic_notch.params, "RHNF_", 18, AC_AttitudeControl_Heli, HarmonicNotchFilterParams),
 #endif
 
     AP_GROUPEND
