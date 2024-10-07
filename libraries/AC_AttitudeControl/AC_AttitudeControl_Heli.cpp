@@ -308,6 +308,7 @@ const AP_Param::GroupInfo AC_AttitudeControl_Heli::var_info[] = {
 #if AP_HNTCH_ENABLE
     // @Param: RHFN_
     // @DisplayName: Harmonic target filter
+    // @Path: ../Filter/HarmonicNotchFilter.cpp
     AP_SUBGROUPINFO(harmonic_notch.params, "RHNF_", 18, AC_AttitudeControl_Heli, HarmonicNotchFilterParams),
 #endif
 
@@ -330,6 +331,7 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
 #if AP_HNTCH_ENABLE
     harmonic_notch.params.init();
     GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Initialized");
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH initialized with params: %d, %f, %f", harmonic_notch.params.enabled(), harmonic_notch.params.attenuation_dB(), harmonic_notch.params.center_freq_hz());
 
     if (harmonic_notch.params.enabled()) {
         GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Enabled");
@@ -349,7 +351,7 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
         harmonic_notch.filter.init(AP::scheduler().get_loop_rate_hz(), harmonic_notch.params);
     }
     
-    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH initialized with params: %d, %f, %f", harmonic_notch.params.enabled(), harmonic_notch.params.attenuation_dB(), harmonic_notch.params.center_freq_hz());
+    
     
 #endif
 }
