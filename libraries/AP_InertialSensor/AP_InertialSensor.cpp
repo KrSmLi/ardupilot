@@ -944,6 +944,8 @@ AP_InertialSensor::init(uint16_t loop_rate)
     }
 #endif
 
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH inert init: %d, %f, %f", harmonic_notches[0].params.enabled(), harmonic_notches[0].params.attenuation_dB(), harmonic_notches[0].params.center_freq_hz());
+
     if (_gyro_count == 0 && _accel_count == 0) {
         _start_backends();
     }
@@ -1071,7 +1073,6 @@ AP_InertialSensor::init(uint16_t loop_rate)
     }
 #endif
 
-    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH inert init: %d, %f, %f", harmonic_notches[0].params.enabled(), harmonic_notches[0].params.attenuation_dB(), harmonic_notches[0].params.center_freq_hz());
 
 #if HAL_INS_TEMPERATURE_CAL_ENABLE
     /*
