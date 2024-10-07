@@ -589,13 +589,14 @@ void Copter::loop_rate_logging()
 void Copter::ten_hz_logging_loop()
 {
     // always write AHRS attitude at 10Hz
+  
     ahrs.Write_Attitude(attitude_control->get_att_target_euler_rad() * RAD_TO_DEG);
     // log attitude controller data if we're not already logging at the higher rate
     if (should_log(MASK_LOG_ATTITUDE_MED) && !should_log(MASK_LOG_ATTITUDE_FAST) && !copter.flightmode->logs_attitude()) {
         Log_Write_Attitude();
     }
     if (!should_log(MASK_LOG_ATTITUDE_FAST) && !copter.flightmode->logs_attitude()) {
-    // log at 10Hz if PIDS bitmask is selected, even if no ATT bitmask is selected; logs at looprate if ATT_FAST and PIDS bitmask set
+        // log at 10Hz if PIDS bitmask is selected, even if no ATT bitmask is selected; logs at looprate if ATT_FAST and PIDS bitmask set
         Log_Write_PIDS();
     }
     // log EKF attitude data always at 10Hz unless ATTITUDE_FAST, then do it in the 25Hz loop
@@ -725,6 +726,7 @@ void Copter::one_hz_loop()
 
     // slowly update the PID notches with the average loop rate
     attitude_control->set_notch_sample_rate(AP::scheduler().get_filtered_loop_rate_hz());
+    attitude_control->
     pos_control->get_accel_z_pid().set_notch_sample_rate(AP::scheduler().get_filtered_loop_rate_hz());
 #if AC_CUSTOMCONTROL_MULTI_ENABLED
     custom_control.set_notch_sample_rate(AP::scheduler().get_filtered_loop_rate_hz());
@@ -732,7 +734,9 @@ void Copter::one_hz_loop()
 }
 
 void Copter::init_simple_bearing()
-{
+{   
+    attitude_control->init_notch();
+
     // capture current cos_yaw and sin_yaw values
     simple_cos_yaw = ahrs.cos_yaw();
     simple_sin_yaw = ahrs.sin_yaw();

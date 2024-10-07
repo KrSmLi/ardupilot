@@ -328,6 +328,9 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
     set_notch_sample_rate(AP::scheduler().get_loop_rate_hz());
 #endif
 
+}
+
+void AC_AttitudeControl_Heli::init_notch() {
 #if AP_HNTCH_ENABLE
     harmonic_notch.params.init();
     GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Initialized");
@@ -347,17 +350,14 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
 #endif
     }
 
-     
+
     if (harmonic_notch.params.enabled()) {
         GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Enabled");
         harmonic_notch.filter.allocate_filters(harmonic_notch.num_dynamic_notches,
-        harmonic_notch.params.harmonics(),
-        harmonic_notch.params.num_composite_notches());
+            harmonic_notch.params.harmonics(),
+            harmonic_notch.params.num_composite_notches());
         harmonic_notch.filter.init(AP::scheduler().get_loop_rate_hz(), harmonic_notch.params);
     }
-    
-    
-    
 #endif
 }
 

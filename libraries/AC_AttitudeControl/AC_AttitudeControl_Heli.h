@@ -105,6 +105,9 @@ public:
     // user settable parameters
     static const struct AP_Param::GroupInfo var_info[];
 
+    // init harmonics notch filters
+    void init_notch();
+
     class HarmonicNotch {
     public:
         HarmonicNotchFilterParams params;
