@@ -339,7 +339,7 @@ void AP_NMEA_Output::update()
 
         // format liaz message
         liaz_length = nmea_printf_buffer(liaz, sizeof(liaz),
-            "$SKYSP,%s,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,%.2f,%.2f,%.2f,,",
+            "$SKYSPTR,%s,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,%.2f,%.2f,%.2f,,",
             dstring,
             tstring,
             yaw_deg, // this is a true north value
