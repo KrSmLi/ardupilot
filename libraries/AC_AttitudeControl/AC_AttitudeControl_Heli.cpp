@@ -331,8 +331,9 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
     harmonic_notch.params.init();
 
     if (harmonic_notch.params.enabled()) {
-    harmonic_notch.num_calculated_notch_frequencies = 1;
-    harmonic_notch.num_dynamic_notches = 1;
+        GCS_SEND_TEXT(MAV_SEVERIYT_INFO, "HNTCH: Enabled");
+        harmonic_notch.num_calculated_notch_frequencies = 1;
+        harmonic_notch.num_dynamic_notches = 1;
 #if APM_BUILD_COPTER_OR_HELI || APM_BUILD_TYPE(APM_BUILD_ArduPlane)
         harmonic_notch.params.set_default_harmonics(1);
 #endif
@@ -340,6 +341,7 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
 
      
     if (harmonic_notch.params.enabled()) {
+        GCS_SEND_TEXT(MAV_SEVERIYT_INFO, "HNTCH: Enabled");
         harmonic_notch.filter.allocate_filters(harmonic_notch.num_dynamic_notches,
         harmonic_notch.params.harmonics(),
         harmonic_notch.params.num_composite_notches());
