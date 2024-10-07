@@ -324,8 +324,8 @@ void AP_NMEA_Output::update()
     uint16_t liaz_length = 0;
     char liaz[150];
     if ((_message_enable_bitmask.get() & static_cast<int16_t>(Enabled_Messages::LIAZ)) != 0) {
-        //char dstring[7];
-        //hal.util->snprintf(dstring, sizeof(dstring), "%02u%02u%02u", tm->tm_mday, tm->tm_mon + 1, tm->tm_year % 100);
+        char dstring[7];
+        hal.util->snprintf(dstring, sizeof(dstring), "%02u%02u%02u", tm->tm_mday, tm->tm_mon + 1, tm->tm_year % 100);
 
         // get roll, pitch, yaw
         const float roll_deg = wrap_180(degrees(ahrs.get_roll()));
@@ -339,7 +339,8 @@ void AP_NMEA_Output::update()
 
         // format liaz message
         liaz_length = nmea_printf_buffer(liaz, sizeof(liaz),
-            "$LIAZ,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,%.2f,%.2f,%.2f,,",
+            "$LIAZ,%s,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,%.2f,%.2f,%.2f,,",
+            dstring,
             tstring,
             yaw_deg, // this is a true north value
             roll_deg < 0 ? '-' : '+', fabs(roll_deg),    // always show + or - symbol
