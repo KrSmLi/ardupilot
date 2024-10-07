@@ -937,6 +937,8 @@ AP_InertialSensor::init(uint16_t loop_rate)
     // cause divergence of state estimators
     _loop_delta_t_max = 10 * _loop_delta_t;
 
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH inert init: %d, %f, %f", harmonic_notches[0].params.enabled(), harmonic_notches[0].params.attenuation_dB(), harmonic_notches[0].params.center_freq_hz());
+
 #if AP_INERTIALSENSOR_HARMONICNOTCH_ENABLED
     // Initialize notch params
     for (auto &notch : harmonic_notches) {
