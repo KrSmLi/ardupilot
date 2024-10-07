@@ -171,3 +171,12 @@ ENV/
 env.bak/
 venv.bak/
 autotest_result_*_junit.xml
+*.vsidx
+*.ipch
+.vs/ardupilot_fork/v17/.wsuo
+*.db
+*.db-shm
+*.db-wal
+*.opendb
+*.json
+*.sqlite
