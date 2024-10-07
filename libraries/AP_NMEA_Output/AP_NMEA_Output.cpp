@@ -324,8 +324,8 @@ void AP_NMEA_Output::update()
     uint16_t liaz_length = 0;
     char liaz[100];
     if ((_message_enable_bitmask.get() & static_cast<int16_t>(Enabled_Messages::LIAZ)) != 0) {
-        char dstring[7];
-        hal.util->snprintf(dstring, sizeof(dstring), "%02u%02u%02u", tm->tm_mday, tm->tm_mon + 1, tm->tm_year % 100);
+        //char dstring[7];
+        //hal.util->snprintf(dstring, sizeof(dstring), "%02u%02u%02u", tm->tm_mday, tm->tm_mon + 1, tm->tm_year % 100);
 
         // get roll, pitch, yaw
         const float roll_deg = wrap_180(degrees(ahrs.get_roll()));
