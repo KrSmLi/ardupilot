@@ -332,7 +332,7 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
     harmonic_notch.params.init();
     GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Initialized");
     GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH initialized with params: %d, %f, %f", harmonic_notch.params.enabled(), harmonic_notch.params.attenuation_dB(), harmonic_notch.params.center_freq_hz());
-    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: %f", _pid_rate_pitch.kP());
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: %f", _pid_rate_pitch.kP().cast_to_float());
 
 
     if (harmonic_notch.params.enabled()) {
