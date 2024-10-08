@@ -47,6 +47,7 @@ void Copter::init_ardupilot()
 #if FRAME_CONFIG == HELI_FRAME
     // trad heli specific initialisation
     heli_init();
+    attitude_control->init_notch();
 #endif
 #if FRAME_CONFIG == HELI_FRAME
     input_manager.set_loop_rate(scheduler.get_loop_rate_hz());
