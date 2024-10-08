@@ -331,36 +331,35 @@ AC_AttitudeControl_Heli::AC_AttitudeControl_Heli(AP_AHRS_View &ahrs, const AP_Mu
 }
 
 void AC_AttitudeControl_Heli::init_notch() {
-    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: INIT_NOTCH_FUNKCE");
-//#if AP_HNTCH_ENABLE
-//    harmonic_notch.params.init();
-//    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Initialized");
-//    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH initialized with params: %d, %f, %f", harmonic_notch.params.enabled(), harmonic_notch.params.attenuation_dB(), harmonic_notch.params.center_freq_hz());
-//    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: %f", _pid_rate_pitch.kP().cast_to_float());
-//    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: %f", _pid_rate_pitch.kI().cast_to_float());
-//    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: ff = %f", _pid_rate_pitch.ff().cast_to_float());
-//
-//
-//
-//    if (harmonic_notch.params.enabled()) {
-//        GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Enabled");
-//        harmonic_notch.num_calculated_notch_frequencies = 1;
-//        harmonic_notch.num_dynamic_notches = 1;
-//#if APM_BUILD_COPTER_OR_HELI || APM_BUILD_TYPE(APM_BUILD_ArduPlane)
-//        harmonic_notch.params.set_default_harmonics(1);
-//#endif
-//    }
-//
-//
-//    if (harmonic_notch.params.enabled()) {
-//        GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Enabled");
-//        harmonic_notch.filter.allocate_filters(harmonic_notch.num_dynamic_notches,
-//            harmonic_notch.params.harmonics(),
-//            harmonic_notch.params.num_composite_notches());
-//        harmonic_notch.filter.init(AP::scheduler().get_loop_rate_hz(), harmonic_notch.params);
-//    }
-//
-//#endif
+#if AP_HNTCH_ENABLE
+    harmonic_notch.params.init();
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Initialized");
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH initialized with params: %d, %f, %f", harmonic_notch.params.enabled(), harmonic_notch.params.attenuation_dB(), harmonic_notch.params.center_freq_hz());
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: %f", _pid_rate_pitch.kP().cast_to_float());
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: %f", _pid_rate_pitch.kI().cast_to_float());
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: ff = %f", _pid_rate_pitch.ff().cast_to_float());
+
+
+
+    if (harmonic_notch.params.enabled()) {
+        GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Enabled");
+        harmonic_notch.num_calculated_notch_frequencies = 1;
+        harmonic_notch.num_dynamic_notches = 1;
+#if APM_BUILD_COPTER_OR_HELI || APM_BUILD_TYPE(APM_BUILD_ArduPlane)
+        harmonic_notch.params.set_default_harmonics(1);
+#endif
+    }
+
+
+    if (harmonic_notch.params.enabled()) {
+        GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Enabled");
+        harmonic_notch.filter.allocate_filters(harmonic_notch.num_dynamic_notches,
+            harmonic_notch.params.harmonics(),
+            harmonic_notch.params.num_composite_notches());
+        harmonic_notch.filter.init(AP::scheduler().get_loop_rate_hz(), harmonic_notch.params);
+    }
+
+#endif
 }
 
 // passthrough_bf_roll_pitch_rate_yaw - passthrough the pilots roll and pitch inputs directly to swashplate for flybar acro mode
