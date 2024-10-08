@@ -513,6 +513,7 @@ void AC_AttitudeControl_Heli::rate_bf_to_motor_roll_pitch(const Vector3f &rate_r
         } else
         {
             rate_roll_target_rads_filtered = harmonic_notch.filter.apply(rate_roll_target_rads_filtered);
+            GCS_SEND_TEXT(MAV_SEVERITY_INFO, ".");
         }
     }
     
