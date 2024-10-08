@@ -334,12 +334,10 @@ void AC_AttitudeControl_Heli::init_notch() {
 #if AP_HNTCH_ENABLE
     harmonic_notch.params.init();
     GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Initialized");
-    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH initialized with params: %d, %f, %f", harmonic_notch.params.enabled(), harmonic_notch.params.attenuation_dB(), harmonic_notch.params.center_freq_hz());
-    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: %f", _pid_rate_pitch.kP().cast_to_float());
-    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: %f", _pid_rate_pitch.kI().cast_to_float());
-    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "DEBUG: ff = %f", _pid_rate_pitch.ff().cast_to_float());
-
-
+    GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH initialized with params: \r\nen=%d,\r\n att=%f,\r\n frq=%f",
+        harmonic_notch.params.enabled(),
+        harmonic_notch.params.attenuation_dB(),
+        harmonic_notch.params.center_freq_hz());
 
     if (harmonic_notch.params.enabled()) {
         GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Enabled");
@@ -350,12 +348,11 @@ void AC_AttitudeControl_Heli::init_notch() {
 #endif
     }
 
-
     if (harmonic_notch.params.enabled()) {
         GCS_SEND_TEXT(MAV_SEVERITY_INFO, "HNTCH: Enabled");
         harmonic_notch.filter.allocate_filters(harmonic_notch.num_dynamic_notches,
-            harmonic_notch.params.harmonics(),
-            harmonic_notch.params.num_composite_notches());
+        harmonic_notch.params.harmonics(),
+        harmonic_notch.params.num_composite_notches());
         harmonic_notch.filter.init(AP::scheduler().get_loop_rate_hz(), harmonic_notch.params);
     }
 
