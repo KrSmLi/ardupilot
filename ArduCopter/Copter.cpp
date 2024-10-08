@@ -735,7 +735,6 @@ void Copter::one_hz_loop()
 void Copter::init_simple_bearing()
 {   
     attitude_control->init_notch();
-
     // capture current cos_yaw and sin_yaw values
     simple_cos_yaw = ahrs.cos_yaw();
     simple_sin_yaw = ahrs.sin_yaw();

@@ -241,6 +241,8 @@ public:
     // Run angular velocity controller and send outputs to the motors
     virtual void rate_controller_run() = 0;
 
+    virtual void init_notch() = 0;
+
     // reset target loop rate modifications
     virtual void rate_controller_target_reset() {}
 

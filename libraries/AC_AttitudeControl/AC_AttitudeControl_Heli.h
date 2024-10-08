@@ -106,7 +106,7 @@ public:
     static const struct AP_Param::GroupInfo var_info[];
 
     // init harmonics notch filters
-    void init_notch();
+    virtual void init_notch() override;
 
     class HarmonicNotch {
     public:
