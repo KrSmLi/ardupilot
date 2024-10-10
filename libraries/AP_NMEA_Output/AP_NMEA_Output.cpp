@@ -308,7 +308,7 @@ void AP_NMEA_Output::update()
         AP_RangeFinder_Backend* s = rangefinder->find_instance(ROTATION_PITCH_270);
     }
     else {
-        s = nullptr
+        s = nullptr;
     }
     
     if (s != nullptr) {
