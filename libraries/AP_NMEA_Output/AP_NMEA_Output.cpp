@@ -304,20 +304,14 @@ void AP_NMEA_Output::update()
 
 #if AP_RANGEFINDER_ENABLED
     RangeFinder *rangefinder = RangeFinder::get_singleton();
-    if (rangefinder != nullptr) {
-        AP_RangeFinder_Backend* s = rangefinder->find_instance(ROTATION_PITCH_270);
+    if (rangefinder == nullptr) {
+        return;
     }
-    else {
-        s = nullptr;
+    AP_RangeFinder_Backend *s = rangefinder->find_instance(ROTATION_PITCH_270);
+    if (s == nullptr) {
+        return;
     }
-    
-    if (s != nullptr) {
-        alt_rngf = s->distance();
-    }
-    else {
-        alt_rngf = 0;
-    }
-    
+    alt_rngf = s->distance();
 
     //hal.util->snprintf(alt_cm,sizeof(alt_cm),"%c%d", alt_rngf_cm < 0 ? '-' : '+', fabs(alt_rngf_cm))
 #endif
@@ -345,7 +339,7 @@ void AP_NMEA_Output::update()
 
         // format liaz message
         liaz_length = nmea_printf_buffer(liaz, sizeof(liaz),
-            "$SKYSPTR,%s,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,%.2f,%.2f,%.2f,,",
+            "$LIAZ,%s,%s,%.2f,%c%.2f,%c%.2f,%.2f,%s,%s,%07.2f,%.2f,%.2f,%.2f,%.2f,,",
             dstring,
             tstring,
             yaw_deg, // this is a true north value
