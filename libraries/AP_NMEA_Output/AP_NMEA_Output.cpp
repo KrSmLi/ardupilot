@@ -304,14 +304,20 @@ void AP_NMEA_Output::update()
 
 #if AP_RANGEFINDER_ENABLED
     RangeFinder *rangefinder = RangeFinder::get_singleton();
-    if (rangefinder == nullptr) {
-        return;
+    if (rangefinder != nullptr) {
+        AP_RangeFinder_Backend* s = rangefinder->find_instance(ROTATION_PITCH_270);
     }
-    AP_RangeFinder_Backend *s = rangefinder->find_instance(ROTATION_PITCH_270);
-    if (s == nullptr) {
-        return;
+    else {
+        s = nullptr
     }
-    alt_rngf = s->distance();
+    
+    if (s != nullptr) {
+        alt_rngf = s->distance();
+    }
+    else {
+        alt_rngf = 0;
+    }
+    
 
     //hal.util->snprintf(alt_cm,sizeof(alt_cm),"%c%d", alt_rngf_cm < 0 ? '-' : '+', fabs(alt_rngf_cm))
 #endif
